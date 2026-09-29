@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node", "@playwright/test"]
+  },
+  "include": ["e2e/**/*.ts", "playwright.config.ts"],
+  "exclude": [
+    "e2e/归档/**",
+    "e2e/录制草稿/**",
+    "e2e/hunan-system-management/**",
+    "e2e/sm-static/**"
+  ]
+}

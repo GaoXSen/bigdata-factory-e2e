@@ -1,0 +1,4 @@
+file_id|shared_key|file_name|file_amount|business_date
+1|K001|file_alpha|100.50|2026-09-09
+2|K002|file_beta|200.25|2026-09-09
+3|K003|file_gamma|300.00|2026-09-09

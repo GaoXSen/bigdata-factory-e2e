@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Inspect the actual commits being pushed, including files added with git add -f.
+while read -r local_ref local_oid remote_ref remote_oid; do
+  [[ "$local_oid" =~ ^0+$ ]] && continue
+
+  while IFS= read -r -d '' entry; do
+    file=${entry#*$'\t'}
+    metadata=${entry%%$'\t'*}
+    size=${metadata##* }
+    case "$file" in
+      .gitignore|.gitattributes|.env.example|README.md|AGENTS.md|package.json|package-lock.json|playwright.config.ts|tsconfig.json|环境检查清单.md|部署与执行清单.md|.githooks/pre-push|e2e/test-environment.ts)
+        ;;
+      e2e-testing/*.md)
+        ;;
+      e2e/工厂/湖南中行/*)
+        case "$file" in
+          *.ts|*.md|*.csv|*.txt|*.xls|*.xlsx|*/project.marker|*/资源/字段血缘/SFTP/e2e_lineage_sftp_*|*/资源/字段血缘/文件接入/e2e_lineage_file_source)
+            ;;
+          *) echo "Blocked push: unexpected project file: $file" >&2; exit 1 ;;
+        esac
+        case "$file" in
+          */generate-fld-excel-fixtures.result.txt)
+            echo "Blocked push: generated result: $file" >&2; exit 1 ;;
+        esac
+        ;;
+      *) echo "Blocked push: path outside repository allowlist: $file" >&2; exit 1 ;;
+    esac
+
+    if (( size > 2097152 )); then
+      echo "Blocked push: file exceeds 2 MiB: $file" >&2
+      exit 1
+    fi
+  done < <(git -c core.quotepath=false ls-tree -r -z -l "$local_oid")
+
+  if git grep -Iq -E 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN (RSA|OPENSSH|EC) PRIVATE KEY-----' "$local_oid" --; then
+    echo 'Blocked push: a common secret format was found in the commit.' >&2
+    exit 1
+  fi
+done

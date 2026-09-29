@@ -1,0 +1,4 @@
+sftp_id,shared_key,region_code,sftp_amount,business_date
+101,K001,HN,10.00,2026-09-11
+102,K002,SX,20.75,2026-09-11
+103,K003,HN,30.00,2026-09-11

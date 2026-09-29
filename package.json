@@ -1,0 +1,34 @@
+{
+  "name": "factory-e2e-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:list": "playwright test --list",
+    "test:headed": "playwright test --headed",
+    "test:分阶段验证": "playwright test e2e/冒烟/数据工厂-分阶段验证.spec.ts --project=chromium",
+    "test:自有数据闭环": "cmd /c scripts\\执行自有数据闭环.cmd",
+    "test:并行回归": "cmd /c scripts\\执行并行回归.cmd",
+    "ftp:本地启动": "node scripts/启动本地FTP-SFTP.mjs",
+    "ftp:本地检查": "node scripts/检查本地FTP-SFTP.mjs",
+    "report:湖南中行:serve": "node scripts/启动湖南中行报告服务.mjs",
+    "db:检查": "node scripts/检查数据库连接.mjs",
+    "report": "playwright show-report",
+    "demo:smoke": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-demo.ps1 -Mode smoke",
+    "demo:partial": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-demo.ps1 -Mode partial"
+  },
+  "devDependencies": {
+    "@playwright/mcp": "^0.0.79",
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.21.0",
+    "basic-ftp": "^6.2.0",
+    "ftp-srv": "^4.6.3",
+    "mysql2": "^3.23.3",
+    "pg": "^8.23.0",
+    "ssh2": "^1.17.0",
+    "ssh2-sftp-client": "^12.1.1",
+    "ssh2-sftp-server": "^1.1.2",
+    "typescript": "^5.8.0"
+  }
+}
